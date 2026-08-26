@@ -46,6 +46,10 @@ class Enemy(GameSprite):
             self.rect.x = randint(25, 675)
             self.rect.y = 0
             lost += 1
+font.init()
+font = font.Font(None, 35)
+lose_R = font.render('WIN Left', True, 255, 255, 255)
+lose_L = font.render('WIN Right', True, 255, 255, 255)
 
 tennis_ball = GameSprite('tennis_ball.png', 10, 300, 250, 40, 40)
 tennis_racketL = Player('tennis_racket.png', 10, 25, 210, 100, 150)
