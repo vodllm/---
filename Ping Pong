@@ -2,6 +2,7 @@ from pygame import *
 from random import *
 from time import time as timer
 
+
 color_w = (0, 0, 100)
 window = display.set_mode((600, 500))
 window.fill(color_w)
@@ -9,7 +10,8 @@ game = True
 Finish = False
 FPS = 30
 clock = time.Clock()
-
+speed_y = 3
+speed_x = 3
 
 
 class GameSprite(sprite.Sprite):
@@ -46,10 +48,12 @@ class Enemy(GameSprite):
             self.rect.x = randint(25, 675)
             self.rect.y = 0
             lost += 1
+
 font.init()
 font = font.Font(None, 35)
-lose_R = font.render('WIN Left', True, 255, 255, 255)
-lose_L = font.render('WIN Right', True, 255, 255, 255)
+lose_R = font.render('WIN Left', True, (255, 255, 255))
+lose_L = font.render('WIN Right', True, (255, 255, 255))
+
 
 tennis_ball = GameSprite('tennis_ball.png', 10, 300, 250, 40, 40)
 tennis_racketL = Player('tennis_racket.png', 10, 25, 210, 100, 150)
@@ -63,10 +67,23 @@ while game:
         window.fill(color_w)
         tennis_racketL.update_L()
         tennis_racketR.update_R()
-        tennis_ball.rect.x += 3 
-        tennis_ball.rect.y += 3
+        tennis_ball.rect.x += speed_x 
+        tennis_ball.rect.y += speed_y
+        if tennis_ball.rect.x > 475:
+            window.blit(lose_L, (270, 250))
+            Finish == True
+        if tennis_ball.rect.x < 25:
+            window.blit(lose_R, (270, 250))
+            Finish == True
+        if tennis_ball.rect.y > 500 or tennis_ball.rect.y < 0:
+            speed_y *= -1 
+        if sprite.collide_rect(tennis_racketL, tennis_ball)  or sprite.collide_rect(tennis_racketR, tennis_ball):
+            speed_x *= -1
+            speed_y *= 1
+            
     tennis_racketL.reset()
     tennis_racketR.reset()
+    tennis_ball.reset()
         
     
     
